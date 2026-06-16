@@ -29,11 +29,8 @@ jobs:
       - name: Compilar el proyecto
         run: mvn -B clean compile
 
-      - name: Ejecutar pruebas unitarias (JUnit 5 + Mockito)
-        run: mvn -B test
-
-      - name: Generar y verificar reporte de cobertura JaCoCo (mínimo 80%)
-        run: mvn -B jacoco:report jacoco:check
+      - name: Ejecutar pruebas, generar y verificar cobertura JaCoCo (mvn verify)
+        run: mvn -B verify
 
       - name: Publicar reporte de cobertura como artefacto
         if: always()
