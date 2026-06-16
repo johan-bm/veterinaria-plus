@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Fragmento de alertas: muestra mensajes flash de exito o error.
+     - mensajeExito/mensajeError llegan como CLAVES de internacionalizacion
+       (ej. "propietario.guardado.exito") y se resuelven con #{...}
+     - mensajeErrorDirecto llega ya redactado en español desde una
+       excepcion de negocio (ver ManejadorExcepcionesWeb) y se muestra tal cual -->
+<div th:fragment="alertas" class="container mt-3">
+    <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill"></i> <span th:text="#{${mensajeExito}}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="#{${mensajeError}}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${mensajeErrorDirecto}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="${mensajeErrorDirecto}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+</div>
+
+</body>
+</html>

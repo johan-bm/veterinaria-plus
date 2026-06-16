@@ -1,0 +1,58 @@
+# =========================================================
+# Orquestación de Veterinaria+: aplicación Spring Boot + PostgreSQL
+#
+# Uso:
+#   docker compose up -d --build   (primera vez o tras cambios de código)
+#   docker compose up -d           (levantar sin reconstruir)
+#   docker compose down            (detener y eliminar contenedores)
+#   docker compose down -v         (detener y BORRAR también los datos)
+#   docker compose logs -f app     (ver logs de la aplicación en vivo)
+# =========================================================
+
+services:
+
+  db:
+    image: postgres:15
+    container_name: veterinaria-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: veterinaria_plus
+      POSTGRES_USER: veterinaria_user
+      POSTGRES_PASSWORD: veterinaria_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - veterinaria_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U veterinaria_user -d veterinaria_plus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: veterinaria-app
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: veterinaria_plus
+      DB_USER: veterinaria_user
+      DB_PASSWORD: veterinaria_pass
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  veterinaria_db_data:

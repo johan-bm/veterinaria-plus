@@ -1,0 +1,17 @@
+# =========================================================
+# Perfil DOCKER: la aplicacion y PostgreSQL corren en contenedores,
+# orquestados por docker-compose.yml. El host "db" es el nombre
+# del servicio de PostgreSQL definido en docker-compose.
+# =========================================================
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:db}:${DB_PORT:5432}/${DB_NAME:veterinaria_plus}
+    username: ${DB_USER:veterinaria_user}
+    password: ${DB_PASSWORD:veterinaria_pass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update

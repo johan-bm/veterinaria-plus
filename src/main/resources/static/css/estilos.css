@@ -1,0 +1,24 @@
+/* Estilos personalizados de Veterinaria+ */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    transition: transform 0.15s ease-in-out;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.navbar-brand {
+    font-size: 1.3rem;
+}
+
+table.table thead {
+    background-color: #e9ecef;
+}
+
+.badge-estado-AGENDADA { background-color: #6c757d; }
+.badge-estado-CONFIRMADA { background-color: #0d6efd; }
+.badge-estado-CANCELADA { background-color: #dc3545; }
+.badge-estado-COMPLETADA { background-color: #198754; }

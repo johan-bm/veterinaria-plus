@@ -1,0 +1,26 @@
+# =========================================================
+# Perfil LOCAL: para correr la aplicacion directamente desde NetBeans
+# (fuera de Docker) mientras la base de datos PostgreSQL sigue
+# corriendo en un contenedor Docker expuesto en localhost.
+#
+# Uso: ejecutar la app con la variable de entorno
+#   SPRING_PROFILES_ACTIVE=local
+# o el parametro --spring.profiles.active=local
+# =========================================================
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/veterinaria_plus
+    username: veterinaria_user
+    password: veterinaria_pass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    com.veterinariaplus: DEBUG

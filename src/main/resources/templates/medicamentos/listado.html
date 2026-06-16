@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{medicamento.titulo}">Gestión de Medicamentos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+<div th:replace="~{fragmentos/navegacion :: navegacion}"></div>
+<div th:replace="~{fragmentos/alertas :: alertas}"></div>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 th:text="#{medicamento.titulo}">Gestión de Medicamentos</h2>
+        <a th:href="@{/medicamentos/nuevo}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> <span th:text="#{medicamento.nuevo}">Nuevo medicamento</span>
+        </a>
+    </div>
+
+    <div th:if="${medicamentos.isEmpty()}" class="alert alert-info" th:text="#{mensaje.sinDatos}">
+        No hay datos para mostrar
+    </div>
+
+    <div th:unless="${medicamentos.isEmpty()}" class="table-responsive">
+        <table class="table table-hover table-striped bg-white shadow-sm">
+            <thead>
+            <tr>
+                <th th:text="#{medicamento.nombre}">Nombre</th>
+                <th th:text="#{medicamento.principioActivo}">Principio activo</th>
+                <th th:text="#{medicamento.stock}">Existencias</th>
+                <th th:text="#{medicamento.stockMinimo}">Existencias mínimas</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="medicamento : ${medicamentos}"
+                th:class="${medicamento.stockBajo} ? 'table-warning' : ''">
+                <td th:text="${medicamento.nombre}"></td>
+                <td th:text="${medicamento.principioActivo}"></td>
+                <td>
+                    <span th:text="${medicamento.stock}"></span>
+                    <i th:if="${medicamento.stockBajo}" class="bi bi-exclamation-triangle-fill text-warning ms-1"
+                       th:title="#{medicamento.alerta.stockBajo}"></i>
+                </td>
+                <td th:text="${medicamento.stockMinimo}"></td>
+                <td>
+                    <form th:action="@{/medicamentos/{id}/incrementar-stock(id=${medicamento.id})}" method="post"
+                          class="d-flex gap-1">
+                        <input type="number" name="cantidad" min="1" value="10" class="form-control form-control-sm" style="width: 70px;">
+                        <button type="submit" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </form>
+                </td>
+                <td class="text-end">
+                    <a th:href="@{/medicamentos/{id}/editar(id=${medicamento.id})}"
+                       class="btn btn-sm btn-outline-primary" th:title="#{accion.editar}">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form th:action="@{/medicamentos/{id}/eliminar(id=${medicamento.id})}" method="post"
+                          class="d-inline" onsubmit="return confirm(this.dataset.confirmMsg)"
+                          th:data-confirm-msg="#{mensaje.confirmarEliminar}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" th:title="#{accion.eliminar}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

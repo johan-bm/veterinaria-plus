@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+    Fragmento de navegacion principal, reutilizado por todas las paginas.
+    Incluye el selector de idioma (ES/EN/FR), que cumple el criterio de
+    internacionalizacion de la rubrica: el cambio de idioma se hace
+    agregando el parametro ?lang=xx a la URL actual (ver
+    InternacionalizacionConfig.java), sin recargar el servidor ni
+    perder el contexto de navegacion.
+-->
+<nav th:fragment="navegacion" class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" th:href="@{/}">
+            <i class="bi bi-heart-pulse-fill"></i> Veterinaria+
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarPrincipal">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}" th:text="#{nav.inicio}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/propietarios}" th:text="#{nav.propietarios}">Propietarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/mascotas}" th:text="#{nav.mascotas}">Mascotas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/veterinarios}" th:text="#{nav.veterinarios}">Veterinarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/citas}" th:text="#{nav.citas}">Citas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/medicamentos}" th:text="#{nav.medicamentos}">Medicamentos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reportes}" th:text="#{nav.reportes}">Reportes</a>
+                </li>
+            </ul>
+
+            <!-- Selector de idioma: conserva la ruta actual (provista por
+                 NavegacionControllerAdvice como atributo de modelo "rutaActual")
+                 y solo agrega/cambia el parametro ?lang -->
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="selectorIdioma" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-translate"></i> <span th:text="#{nav.idioma}">Idioma</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="selectorIdioma">
+                        <li>
+                            <a class="dropdown-item" th:href="@{${rutaActual}(lang='es')}">
+                                Español
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{${rutaActual}(lang='en')}">
+                                English
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{${rutaActual}(lang='fr')}">
+                                Français
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

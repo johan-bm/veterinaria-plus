@@ -1,0 +1,51 @@
+# =========================================================
+# Configuracion principal de Veterinaria+
+# Perfil activo por defecto: docker (para despliegue en contenedores)
+# Para desarrollo local sin Docker, usar: --spring.profiles.active=local
+# =========================================================
+
+spring:
+  application:
+    name: veterinaria-plus
+
+  profiles:
+    active: docker
+
+  # Internacionalizacion (i18n)
+  messages:
+    basename: i18n/mensajes, i18n/validacion
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+server:
+  port: 8080
+
+# Actuator: expone /actuator/health para verificacion de salud del
+# contenedor (usado por docker-compose healthcheck y por el pipeline CI/CD)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+# Configuracion del LocaleResolver (idioma por defecto y parametro de cambio)
+app:
+  i18n:
+    idioma-por-defecto: es
+    idiomas-soportados: es,en,fr
